@@ -14,9 +14,10 @@ print("Reviews file: {}".format(reviews_file))
 
 # Read apps
 appsDict = {}
+APP_HEADER = ''
 if os.path.isfile(apps_file):
     with open(apps_file, 'r', encoding="utf8") as fileApps:
-        fileApps.readline() # avoid first line
+        APP_HEADER = fileApps.readline()
         for line in fileApps:
             tokens = line.split(',')
             appsDict [tokens[0] ] = tokens[1:] #app name : list with rest of info
@@ -52,6 +53,7 @@ else:
 out_file_name = ['out', 'parsed_apps.csv']
 out_file = os.path.join(*out_file_name)
 with open(out_file, 'w', encoding="utf8") as fout:
+    fout.write(APP_HEADER)
     for app in appsDict:
         line = []
         line.append( app )
@@ -60,7 +62,7 @@ with open(out_file, 'w', encoding="utf8") as fout:
             line += reviewDict[app]
 
             line_with_commas = ",".join( [str(x) for x in line] )
-
+            print(line_with_commas)
             fout.write(line_with_commas)
         else:
             pass #if no comments in app avoid writing it
