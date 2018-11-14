@@ -1,5 +1,6 @@
 import os
 
+# Define files
 apps_file_array = ['..', 'data', 'google-play-store-apps', 'googleplaystore.csv']
 reviews_file_array = ['..', 'data', 'google-play-store-apps', 'googleplaystore_user_reviews.csv']
 
@@ -8,6 +9,8 @@ reviews_file = os.path.join(*reviews_file_array)
 
 print("Apps file: {}".format(apps_file))
 print("Reviews file: {}".format(reviews_file))
+
+# Parse both files
 
 # Read apps
 appsDict = {}
@@ -20,7 +23,7 @@ if os.path.isfile(apps_file):
 
     print("Apps found {}".format( len(appsDict) ))
 else:
-    print("Can't find file {}\n".format(apps_file))
+    print("Can't find file {}".format(apps_file))
 
 # Read reviews
 reviewDict = {}
@@ -41,4 +44,23 @@ if os.path.isfile(reviews_file):
 
     print("Reviews found {}".format( len(reviewDict) ))
 else:
-    print("Can't find file {}\n".format(apps_file))
+    print("Can't find file {}".format(apps_file))
+
+
+
+# Adding reviews to app and saving to file
+out_file_name = ['out', 'parsed_apps.csv']
+out_file = os.path.join(*out_file_name)
+with open(out_file, 'w', encoding="utf8") as fout:
+    for app in appsDict:
+        line = []
+        line.append( app )
+        line += appsDict[app]
+        if app in reviewDict:
+            line += reviewDict[app]
+
+            line_with_commas = ",".join( [str(x) for x in line] )
+
+            fout.write(line_with_commas)
+        else:
+            pass #if no comments in app avoid writing it
