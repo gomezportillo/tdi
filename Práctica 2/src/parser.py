@@ -1,5 +1,7 @@
 import os
 
+from model.app import App
+
 # Define files
 apps_file_array = ['..', 'data', 'google-play-store-apps', 'googleplaystore.csv']
 reviews_file_array = ['..', 'data', 'google-play-store-apps', 'googleplaystore_user_reviews.csv']
@@ -28,10 +30,9 @@ if os.path.isfile(apps_file):
     with open(apps_file, 'r', encoding="utf8") as fileApps:
         APP_HEADER = fileApps.readline().replace('\n', '')
         for line in fileApps:
-            line = line.replace('\n', '')
-            tokens = line.split(',')
-            appsDict [tokens[0] ] = tokens[1:] #app name : list with rest of info
-
+            app = App(line)
+            appsDict [ app.name ] = app
+            # print(app.toList())
     print("Apps found {}".format( len(appsDict) ))
 else:
     print("Can't find file {}".format(apps_file))
@@ -70,14 +71,10 @@ APP_HEADER += '\n'
 
 with open(out_file, 'w', encoding="utf8") as fout:
     fout.write(APP_HEADER)
-    for app in appsDict:
-        line = []
-        line.append( app )
-        line += appsDict[app]
-        if app in reviewDict:
-            line += reviewDict[app]
-
-            line_with_commas = ",".join( [str(x) for x in line] )
-            fout.write(line_with_commas + '\n')
+    for key in appsDict:
+        app = appsDict[key]
+        if app.name in reviewDict:
+            app.addReviews( reviewDict[app.name] )
+            fout.write( app.toCSV() )
         else:
             pass #if no comments in app avoid writing it
