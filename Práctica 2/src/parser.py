@@ -32,7 +32,7 @@ if os.path.isfile(apps_file):
         for line in fileApps:
             app = App(line)
             appsDict [ app.name ] = app
-            # print(app.toList())
+
     print("Apps found {}".format( len(appsDict) ))
 else:
     print("Can't find file {}".format(apps_file))
