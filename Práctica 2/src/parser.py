@@ -66,7 +66,7 @@ out_file_name = ['out', 'parsed_apps.csv']
 out_file = os.path.join(*out_file_name)
 
 for x in range(MAX_NUMBER_OF_REVIEWS):
-    APP_HEADER += ',Comments'
+    APP_HEADER += ',Comment {}'.format(x + 1)
 APP_HEADER += '\n'
 
 with open(out_file, 'w', encoding="utf8") as fout:
