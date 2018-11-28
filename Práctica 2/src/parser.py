@@ -27,7 +27,7 @@ print("Reviews file: {}".format(reviews_file))
 appsDict = {}
 APP_HEADER = ''
 if os.path.isfile(apps_file):
-    with open(apps_file, 'r', encoding="utf8") as fileApps:
+    with open(apps_file, 'r') as fileApps:
         APP_HEADER = fileApps.readline().replace('\n', '')
         for line in fileApps:
             app = App(line)
@@ -41,11 +41,11 @@ else:
 reviewDict = {}
 MAX_NUMBER_OF_REVIEWS = 5
 if os.path.isfile(reviews_file):
-    with open(reviews_file, 'r', encoding="utf8") as fileRev:
+    with open(reviews_file, 'r') as fileRev:
         fileRev.readline() # avoid first line
         for line in fileRev:
             line = line.replace('\n', '')
-            tokens = line.split(',')
+            tokens = line.split(';')
             if tokens[0] not in reviewDict:
                 reviewDict[ tokens[0] ] = []
                 reviewDict[ tokens[0] ].append( tokens[1] )
@@ -66,7 +66,7 @@ out_file_name = ['out', 'parsed_apps.csv']
 out_file = os.path.join(*out_file_name)
 
 for x in range(MAX_NUMBER_OF_REVIEWS):
-    APP_HEADER += ',Comment {}'.format(x + 1)
+    APP_HEADER += ';Comment {}'.format(x + 1)
 APP_HEADER += '\n'
 
 with open(out_file, 'w', encoding="utf8") as fout:
